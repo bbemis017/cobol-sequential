@@ -9,7 +9,9 @@ use crate::copybook;
 use crate::copybook::data_type::Decimal;
 use crate::copybook::data_type::DecimalTypeEnum;
 use crate::copybook::data_type::SignEnum;
+use crate::copybook::field_values::FieldValue;
 use crate::copybook::DataTypeEnum;
+use crate::copybook::FieldValueEnum;
 
 #[derive(Parser)]
 #[grammar = "src/copybook_grammar.pest"]
@@ -23,7 +25,17 @@ fn field_rule_into_definition(field_rule: Pair<Rule>, level: u32) -> copybook::F
     let data_type_rule = inner_field_rules.next().unwrap();
     let length_and_data_type = data_type_rule_into_length_and_type(data_type_rule);
 
-    copybook::FieldDefinition::new(level, label, length_and_data_type.0, length_and_data_type.1)
+    let field_value_option = inner_field_rules.next().map(|value_pair| {
+        FieldValueEnum::FieldValue(value_clause_rule_into_definition(value_pair))
+    });
+
+    copybook::FieldDefinition::new_with_value(
+        level,
+        label,
+        length_and_data_type.0,
+        length_and_data_type.1,
+        field_value_option,
+    )
 }
 
 fn length_literal_rule_into_u32(length_literal_pair: Pair<Rule>) -> u32 {
@@ -202,6 +214,11 @@ pub fn statement_rule_into_definition(statement: Pair<Rule>) -> copybook::Statem
         )),
         _ => unreachable!(),
     }
+}
+
+pub fn value_clause_rule_into_definition(value_clause_pair: Pair<Rule>) -> FieldValue {
+    //TODO implement this
+    FieldValue::new(String::from("TODO implement this parser"))
 }
 
 pub fn string_into_file_rule(copybook_str: &str) -> Result<Pairs<Rule>, Box<Error<Rule>>> {

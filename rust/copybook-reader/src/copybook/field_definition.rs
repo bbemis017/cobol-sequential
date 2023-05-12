@@ -1,7 +1,7 @@
 use lombok::Getter;
 use std::fmt;
 
-use super::DataTypeEnum;
+use super::{DataTypeEnum, FieldValueEnum};
 
 /// A FieldDefinition defines a copybook field.
 /// This contains it's level, label, and data type.
@@ -22,6 +22,11 @@ pub struct FieldDefinition {
 
     // The data type for the field.
     data_type: DataTypeEnum,
+
+    // A Field can have values defined within the copybook. These values can provide useful
+    // context or examples of how this field will be used even though they are not an exhaustive
+    // list of possible values for the field.
+    value_option: Option<FieldValueEnum>,
 }
 
 impl FieldDefinition {
@@ -36,6 +41,23 @@ impl FieldDefinition {
             label,
             char_count_option,
             data_type,
+            value_option: None,
+        }
+    }
+
+    pub fn new_with_value(
+        level: u32,
+        label: String,
+        char_count_option: Option<u32>,
+        data_type: DataTypeEnum,
+        value_option: Option<FieldValueEnum>,
+    ) -> FieldDefinition {
+        FieldDefinition {
+            level,
+            label,
+            char_count_option,
+            data_type,
+            value_option,
         }
     }
 }

@@ -27,6 +27,10 @@ comp2_type = {
     "COMP-2"
 }
 
+value = {
+    "VALUE"
+}
+
 level = { 
     ASCII_DIGIT+ 
 }
@@ -43,6 +47,21 @@ label = {
         ASCII_ALPHANUMERIC
         | "-"
       )*
+}
+
+value_clause = {
+    value
+    ~ whitespace+
+    // Keeping the value clause simple for now since we are just going to extract the span
+    ~ (
+        "'"
+        | ASCII_ALPHANUMERIC
+        | ASCII_DIGIT
+        | whitespace
+        | "+"
+        | "-"
+        | "."
+    )+
 }
 
 data_type = {
@@ -159,7 +178,15 @@ assumed_decimal_point_right = {
 }
 
 field = {
-    label ~ whitespace+ ~ data_type
+    label 
+    ~ whitespace+ 
+    ~ data_type
+
+    // Fields can optionally have a value clause defined
+    ~ (
+        whitespace+
+        ~ value_clause
+    )?
 }
 
 group = {
