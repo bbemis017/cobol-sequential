@@ -28,13 +28,13 @@ impl FieldDefinition {
     pub fn new(
         level: u32,
         label: String,
-        maybe_char_count: Option<u32>,
+        char_count_option: Option<u32>,
         data_type: DataTypeEnum,
     ) -> FieldDefinition {
         FieldDefinition {
             level,
             label,
-            char_count_option: maybe_char_count,
+            char_count_option,
             data_type,
         }
     }

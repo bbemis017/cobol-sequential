@@ -8,6 +8,7 @@
 pub mod copybook_definition;
 pub mod data_type;
 pub mod field_definition;
+pub mod field_values;
 pub mod group_definition;
 pub mod statement_definition;
 
@@ -16,5 +17,6 @@ pub mod statement_definition;
 pub use self::copybook_definition::CopybookDefinition;
 pub use self::data_type::DataTypeEnum;
 pub use self::field_definition::FieldDefinition;
+pub use self::field_values::FieldValueEnum;
 pub use self::group_definition::GroupDefinition;
 pub use self::statement_definition::StatementDefinition;
